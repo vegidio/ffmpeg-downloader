@@ -29,6 +29,7 @@ func IsSystemInstalled() bool {
 //   - configName: The name of the configuration directory.
 //
 // Returns:
+//   - string: The path to the FFmpeg binary if found, otherwise an empty string.
 //   - bool: true if the FFmpeg binary is found and executable, otherwise false.
 func IsStaticallyInstalled(configName string) (string, bool) {
 	configDir, err := os.UserConfigDir()
