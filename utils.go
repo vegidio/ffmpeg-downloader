@@ -2,16 +2,26 @@ package ffmpeg_downloader
 
 import (
 	"archive/zip"
+	"context"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/google/go-github/v74/github"
 )
 
 func getLatestVersion() string {
-	return "25.4.0"
+	client := github.NewClient(nil)
+
+	release, _, err := client.Repositories.GetLatestRelease(context.Background(), "vegidio", "ffmpeg-downloader")
+	if err != nil {
+		return ""
+	}
+
+	return release.GetTagName()
 }
 
 func download(url, fileName string) error {
@@ -22,7 +32,7 @@ func download(url, fileName string) error {
 	}
 	defer resp.Body.Close()
 
-	// Check for successful response
+	// Check for a successful response
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("failed to download file: %s", resp.Status)
 	}
@@ -67,7 +77,7 @@ func unzip(src, dest string) error {
 		}
 
 		if f.FileInfo().IsDir() {
-			// Create directory if it doesn't exist
+			// Create a directory if it doesn't exist
 			if err = os.MkdirAll(fpath, f.Mode()); err != nil {
 				return err
 			}
@@ -97,7 +107,7 @@ func unzip(src, dest string) error {
 			return fErr
 		}
 
-		// Copy file contents from zip archive to destination file
+		// Copy file contents from the zip archive to a destination file
 		_, err = io.Copy(outFile, rc)
 		outFile.Close()
 		rc.Close()
