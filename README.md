@@ -4,7 +4,7 @@ A Go library to automatically download FFmpeg in your project.
 
 ## ⬇️ Installation
 
-This library can be installed using Go modules. To do that run the following command in your project's root directory:
+This library can be installed using Go modules. To do that, run the following command in your project's root directory:
 
 ```bash
 $ go get github.com/vegidio/ffmpeg-downloader
@@ -17,6 +17,10 @@ $ go get github.com/vegidio/ffmpeg-downloader
 - `IsSystemInstalled()`: Checks whether FFmpeg is already installed on the system by the user. If it returns `true`, you likely don't need to download FFmpeg, as you can use the version available in the system's `PATH`.
 - `IsStaticallyInstalled(<name>)`: Checks whether FFmpeg was previously installed using **ffmpeg-downloader**. It returns the installation path and `true` if found; otherwise, it returns an empty string and `false`.
 - `Download(<name>)`: Downloads the latest version of FFmpeg to the system. If successful, it returns the installation path and `nil`; otherwise, it returns an empty string and an `error`.
+
+---
+
+- `GetFFmpegPath(<name>)`: Uses all the three functions above to return the path to the FFmpeg executable: it first checks if FFmpeg is installed in the system, then looks for a static installation. If neither is found, it returns an empty string.
 
 You can find a working example in the [example](example) folder.
 
